@@ -1,6 +1,7 @@
 #pragma 
 #include "../tool/snowflake.h"
 #include "../tool/throttle.h"
+#include "../object/signal_slot_easy.h"
 
 void example_throttle()
 {
@@ -72,5 +73,35 @@ void example_snowflake()
 
         std::cout << "duration:" << end - start << std::endl;
     }
+}
+
+
+void example_signal_slot()
+{
+    using namespace signal_slot_esay;
+    bool slot2 = false;
+    bool slot1 = false;
+    signal<void(int, std::string)> signal1;
+
+    auto conn1 = signal1.connect([&slot1](int v, std::string str){
+        slot1 = true;
+        std::cout << "slot 1: " << v << str << std::endl;
+    });
+
+    auto conn2 = signal1.connect([&slot2](int v, std::string str) {
+        slot2 = true;
+        std::cout << "slot 2: " << v << str << std::endl;
+    });
+
+    signal1.emit(100, "jijiji");
+    assert(slot1);
+    assert(slot2);
+
+    slot2 = slot1 = false;
+    conn2.disconnect();
+    signal1.emit(100, "jiujiujiu");
+    assert(slot1);
+    assert(!slot2);
+
 
 }
