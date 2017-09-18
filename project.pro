@@ -14,5 +14,11 @@ SOURCES += $$files(container/*.cpp)
 HEADERS += $$files(tool/*.h)
 SOURCES += $$files(tool/*.cpp)
 
+HEADERS += $$files(time/*.h)
+SOURCES += $$files(time/*.cpp)
+
+HEADERS += $$files(thread/*.h)
+SOURCES += $$files(thread/*.cpp)
+
 HEADERS += $$files(example/*.h)
 SOURCES += $$files(example/*.cpp)
