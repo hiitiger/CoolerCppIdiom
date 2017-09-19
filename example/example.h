@@ -2,6 +2,7 @@
 #include "../tool/snowflake.h"
 #include "../tool/throttle.h"
 #include "../object/signal_slot_easy.h"
+#include "../time/datetime.h"
 
 void example_throttle()
 {
@@ -102,6 +103,11 @@ void example_signal_slot()
     signal1.emit(100, "jiujiujiu");
     assert(slot1);
     assert(!slot2);
+}
 
 
+void example_datetime()
+{
+    auto now = DateTime::now();
+    std::cout << now << std::endl;
 }

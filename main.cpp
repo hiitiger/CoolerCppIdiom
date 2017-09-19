@@ -7,6 +7,7 @@ int main(int /*argc*/, char* /*argv*/[])
     example_throttle();
     example_snowflake();
     example_signal_slot();
+    example_datetime();
 
     return 0;
 }
