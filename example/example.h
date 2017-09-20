@@ -3,6 +3,7 @@
 #include "../tool/throttle.h"
 #include "../object/signal_slot_easy.h"
 #include "../time/datetime.h"
+#include "../thread/workerpool.h"
 
 void example_throttle()
 {
@@ -110,4 +111,30 @@ void example_datetime()
 {
     auto now = DateTime::now();
     std::cout << now << std::endl;
+}
+
+
+void exmaple_workerpool()
+{
+    WorkerPool pool;
+    std::mutex lock;
+    std::map<int, std::thread::id> vec;
+    std::set<std::thread::id> tvec;
+    std::atomic<int> sz = 0;
+    for (auto i = 0; i != 100; ++i)
+    {
+        pool.add([i, &vec, &tvec, &sz, &lock]()
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::lock_guard<std::mutex> scopeLock(lock);
+            vec.insert(std::make_pair(i, std::this_thread::get_id()));
+            tvec.insert(std::this_thread::get_id());
+            sz += 1;
+        });
+    }
+    while(sz != 100)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    std::cout << vec.size() <<"\t" << tvec.size()<<std::endl;
 }
