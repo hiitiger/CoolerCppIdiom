@@ -2,6 +2,7 @@
 #include "../tool/snowflake.h"
 #include "../tool/throttle.h"
 #include "../object/signal_slot_easy.h"
+#include "../object/signal_slot_track.h"
 #include "../time/datetime.h"
 #include "../thread/workerpool.h"
 
@@ -80,19 +81,20 @@ void example_snowflake()
 
 void example_signal_slot()
 {
-    using namespace signal_slot_esay;
+    using namespace signal_slot;
     bool slot2 = false;
     bool slot1 = false;
     signal<void(const std::string&, std::string&&)> signal1;
 
-    auto conn1 = signal1.connect([&slot1](const std::string v, std::string&& str){
+    connection conn1 = signal1.connect([&slot1](const std::string v, std::string&& str){
         slot1 = true;
         std::cout << "slot 1: " << v << std::string(std::move(str)) << std::endl;
     });
 
-    auto conn2 = signal1.connect([&slot2](const std::string v, std::string&& str) {
+    connection conn2 = signal1.connect([&slot2, &conn2](const std::string v, std::string&& str) {
         slot2 = true;
         std::cout << "slot 2: " << v << str << std::endl;
+        conn2.disconnect();
     });
     std::string value = "value";
    // const std::string str = ;
@@ -101,7 +103,7 @@ void example_signal_slot()
     assert(slot2);
 
     slot2 = slot1 = false;
-    conn2.disconnect();
+ //   conn2.disconnect();
     signal1(value, std::string("jiujiujiu"));
     assert(slot1);
     assert(!slot2);
