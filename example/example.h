@@ -83,25 +83,26 @@ void example_signal_slot()
     using namespace signal_slot_esay;
     bool slot2 = false;
     bool slot1 = false;
-    signal<void(int, std::string)> signal1;
+    signal<void(const std::string&, std::string&&)> signal1;
 
-    auto conn1 = signal1.connect([&slot1](int v, std::string str){
+    auto conn1 = signal1.connect([&slot1](const std::string v, std::string&& str){
         slot1 = true;
-        std::cout << "slot 1: " << v << str << std::endl;
+        std::cout << "slot 1: " << v << std::string(std::move(str)) << std::endl;
     });
 
-    auto conn2 = signal1.connect([&slot2](int v, std::string str) {
+    auto conn2 = signal1.connect([&slot2](const std::string v, std::string&& str) {
         slot2 = true;
         std::cout << "slot 2: " << v << str << std::endl;
     });
-
-    signal1.emit(100, "jijiji");
+    std::string value = "value";
+   // const std::string str = ;
+    signal1.emit(value, ("jijiji"));
     assert(slot1);
     assert(slot2);
 
     slot2 = slot1 = false;
     conn2.disconnect();
-    signal1.emit(100, "jiujiujiu");
+    signal1(value, std::string("jiujiujiu"));
     assert(slot1);
     assert(!slot2);
 }

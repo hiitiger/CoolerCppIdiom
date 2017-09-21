@@ -2,6 +2,34 @@
 
 namespace signal_slot_esay
 {
+
+    template<class T>
+    struct arg_traits
+    {
+        typedef const T& param_type;
+    };
+
+    template<class T>
+    struct arg_traits<T&>
+    {
+        typedef T& param_type;
+    };
+
+    template<class T>
+    struct arg_traits<const T&>
+    {
+        typedef const T& param_type;
+    };
+
+    template<class T>
+    struct arg_traits<T&&>
+    {
+        typedef T&& param_type;
+    };
+
+    template<class T>
+    using arg_traits_t = typename arg_traits<T> ::param_type;
+
     class connection_context_base
     {
         std::atomic<bool>  connected_ = true;
@@ -126,19 +154,19 @@ namespace signal_slot_esay
 
         void operator()(A... args)
         {
+            (*this).emit(std::forward<A>(args)...);
+        }
+
+        void emit(arg_traits_t<A>... args)
+        {
             auto it = connections_.begin();
             for (; it != connections_.end();)
             {
                 auto next = it;
                 ++next;
-                (*it)->invoke(std::forward<A>(args)...);
+                (*it)->invoke(arg_traits_t<A>(args)...);
                 it = next;
             }
-        }
-
-        void emit(A... args)
-        {
-            (*this)(std::forward<A>(args)...);
         }
     };
 }
