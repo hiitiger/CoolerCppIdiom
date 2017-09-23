@@ -5,6 +5,10 @@
 #include "../object/signal_slot_track.h"
 #include "../time/datetime.h"
 #include "../thread/workerpool.h"
+#include "../object/comptr.h"
+#include "../object/copyonwrite.h"
+#include "../container/skiplist.h"
+#include "../tool/utils.h"
 
 void example_throttle()
 {
@@ -63,19 +67,24 @@ void example_snowflake()
         std::cout << "duration:" << end - start << std::endl;
     }
 
+    WorkerPool pool;
+    Snowflake<true> ff;
+    for (int i = 0; i != 10; ++i)
     {
-        Snowflake<true> ff;
-        int64_t start = duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
-        priv::usleep((start / 1000 + 1) * 1000 - start);
-        start = duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
-        for (auto i = 0; i != 4096 * 2; ++i)
-        {
-            ff.generate();
-        }
-        int64_t end = duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
+        pool.add([&]() {
+            int64_t start = duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
+            priv::usleep((start / 1000 + 1) * 1000 - start);
+            start = duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
+            for (auto i = 0; i != 4096 * 1; ++i)
+            {
+                ff.generate();
+            }
+            int64_t end = duration_cast<microseconds>(steady_clock::now().time_since_epoch()).count();
 
-        std::cout << "duration:" << end - start << std::endl;
+            std::cout << std::this_thread::get_id() << ", duration:" << end - start << std::endl;
+        });
     }
+    std::this_thread::sleep_for(seconds(1));
 }
 
 
@@ -140,4 +149,34 @@ void exmaple_workerpool()
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     std::cout << vec.size() <<"\t" << tvec.size()<<std::endl;
+}
+
+void exmaple_strings()
+{
+    auto res_l = utils::to_lower<std::string>("aBc");
+    auto res_u = utils::to_upper<std::string>("aBc");
+    assert(res_l == "abc");
+    assert(res_u == "ABC");
+
+    std::vector<std::string> rr;
+    auto cvec = utils::split<std::string>(("123, fa,143,,  ,,"), ',', false);
+    assert(cvec == std::vector<std::string>({ "123", " fa", "143", "", "  ", "", "" }));
+    auto cvec2 = utils::split<std::string>(("123, fa,143,,  ,,"), ',');
+    assert(cvec2 == std::vector<std::string>({ "123", " fa", "143",  "  " }));
+
+    auto rsstr = utils::replace_substr<std::wstring>(L"123@1@123@1@1avc@1", L"@1", L"@2");
+    assert(utils::ends_with(rsstr, L"@2"));
+
+    std::vector<std::string> vec{ "1", "2", "3", "@", "abc", "." "com" };
+    auto jvec = utils::join(vec, "fxxk");
+
+    std::string jvec2;
+    for (auto s : vec)
+    {
+        jvec2.append(s);
+        jvec2.append("fxxk");
+    }
+    jvec2 = jvec2.substr(0, jvec2.size() - 4);
+
+    assert(jvec == jvec2);
 }
