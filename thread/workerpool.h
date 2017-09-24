@@ -99,6 +99,7 @@ inline void WorkerPool::start(unsigned int size)
         return;
     }
     running_ = true;
+    tasks_.start();
     for (unsigned int i = 0; i != size; ++i)
     {
         threads_.push_back(std::thread(&WorkerPool::threadRun, this));

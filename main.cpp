@@ -9,5 +9,6 @@ int main(int /*argc*/, char* /*argv*/[])
     example_signal_slot();
     example_datetime();
     exmaple_workerpool();
+    exmaple_strings();
     return 0;
 }

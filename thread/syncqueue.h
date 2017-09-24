@@ -6,7 +6,7 @@ class SyncQueue
     std::mutex mutex_;
     std::condition_variable cv_;
     std::deque<T> queue_;
-    bool quit_ = false;
+    bool stop_ = false;
 
     SyncQueue(const SyncQueue&) = delete;
     SyncQueue &operator=(const SyncQueue &) = delete;
@@ -15,7 +15,7 @@ public:
     SyncQueue() = default;
     ~SyncQueue();
 
-    void restart();
+    void start();
     void stop();
 
     bool isEmpty();
@@ -36,16 +36,16 @@ template<class T> SyncQueue<T>::~SyncQueue()
     stop();
 }
 
-template<class T> void SyncQueue<T>::restart()
+template<class T> void SyncQueue<T>::start()
 {
     std::unique_lock<std::mutex> lock(mutex_);
-    quit_ = false;
+    stop_ = false;
 }
 
 template<class T> void SyncQueue<T>::stop()
 {
     std::unique_lock<std::mutex> lock(mutex_);
-    quit_ = true;
+    stop_ = true;
     cv_.notify_all();
 }
 
@@ -103,12 +103,12 @@ template<class T> bool SyncQueue<T>::try_dequeueAll(std::deque<T>& items)
 template<class T> bool SyncQueue<T>::dequeue(T& item)
 {
     std::unique_lock<std::mutex> lock(mutex_);
-    while (queue_.empty() && !quit_)
+    while (queue_.empty() && !stop_)
     {
         cv_.wait(lock);
     }
 
-    if (quit_)
+    if (stop_)
     {
         return false;
     }
@@ -121,12 +121,12 @@ template<class T> bool SyncQueue<T>::dequeue(T& item)
 template<class T> bool SyncQueue<T>::dequeueAll(std::deque<T>& items)
 {
     std::unique_lock<std::mutex> lock(mutex_);
-    while (queue_.empty() && !quit_)
+    while (queue_.empty() && !stop_)
     {
         cv_.wait(lock);
     }
 
-    if (quit_)
+    if (stop_)
     {
         return false;
     }
