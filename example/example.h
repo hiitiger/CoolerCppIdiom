@@ -9,6 +9,7 @@
 #include "../object/copyonwrite.h"
 #include "../container/skiplist.h"
 #include "../tool/utils.h"
+#include "../tool/utlils_num.h"
 
 void example_throttle()
 {

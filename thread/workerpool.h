@@ -42,6 +42,7 @@ inline WorkerPool::~WorkerPool()
     stop();
 }
 
+//if build this as a dynamic library make sure put this function into cpp source file
 inline WorkerPool* WorkerPool::pool()
 {
     static WorkerPool pool;

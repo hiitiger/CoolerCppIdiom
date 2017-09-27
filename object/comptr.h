@@ -1,5 +1,5 @@
 #pragma once
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#if defined(_WIN32)
 template <class T>
 class ComPtr
 {

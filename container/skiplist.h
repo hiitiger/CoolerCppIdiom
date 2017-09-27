@@ -40,8 +40,7 @@ private:
     Node* createNode(const std::pair<K, V>& item);
     Node* createNode(std::pair<K, V>&& item);
 
-    const Node* findNode(const K& key) const;
-    Node* findNode(const K& key);
+    Node* findNode(const K& key) const;
 
     const Node* nodeAt(int index) const;
     Node* nodeAt(int index);
@@ -245,31 +244,7 @@ SkiplistNode_t<K, V>* Skiplist<K, V>::createNode(std::pair<K, V>&& item)
 }
 
 template<class K, class V>
-const SkiplistNode_t<K, V>* Skiplist<K, V>::findNode(const K& key) const
-{
-    const Node* cur = header_;
-    const Node* next = header_;
-    int k = level_;
-
-    do
-    {
-        while ((next = cur->forward[k]) != header_ && (next->data.first < key))
-        {
-            cur = next;
-        }
-    } while (--k >= 0);
-
-    if (next != header_ && next->data.first == key)
-    {
-        return next;
-    }
-    else
-        return header_;
-}
-
-
-template<class K, class V>
-SkiplistNode_t<K, V>* Skiplist<K, V>::findNode(const K& key)
+SkiplistNode_t<K, V>* Skiplist<K, V>::findNode(const K& key) const
 {
     Node* cur = header_;
     Node* next = header_;

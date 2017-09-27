@@ -46,7 +46,7 @@ namespace priv
 
     inline void usleep(std::int64_t microsecs_to_sleep)
     {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#if defined(_WIN32)
         LARGE_INTEGER ft;
         ft.QuadPart = -(10 * microsecs_to_sleep);
         HANDLE timer = CreateWaitableTimer(nullptr, TRUE, nullptr);
