@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtCore>
+#include <QtCore/QtCore>
 
 namespace Qx
 {
