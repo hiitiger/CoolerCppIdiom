@@ -5,6 +5,8 @@ CONFIG += console
 PRECOMPILED_HEADER = stable.h
 SOURCES += $$files(main.cpp)
 
+INCLUDEPATH += ./
+
 HEADERS += $$files(object/*.h)
 SOURCES += $$files(object/*.cpp)
 
