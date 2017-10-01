@@ -8,7 +8,8 @@ int main(int /*argc*/, char* /*argv*/[])
     example_snowflake();
     example_signal_slot();
     example_datetime();
-    exmaple_workerpool();
-    exmaple_strings();
+    example_workerpool();
+    example_strings();
+    example_buffer();
     return 0;
 }

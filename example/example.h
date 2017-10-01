@@ -8,6 +8,7 @@
 #include "../object/comptr.h"
 #include "../object/copyonwrite.h"
 #include "../container/skiplist.h"
+#include "../container/buffer.h"
 #include "../tool/utils.h"
 #include "../tool/utlils_num.h"
 
@@ -127,7 +128,7 @@ void example_datetime()
 }
 
 
-void exmaple_workerpool()
+void example_workerpool()
 {
     WorkerPool pool;
     std::mutex lock;
@@ -152,7 +153,7 @@ void exmaple_workerpool()
     std::cout << vec.size() <<"\t" << tvec.size()<<std::endl;
 }
 
-void exmaple_strings()
+void example_strings()
 {
     auto res_l = utils::to_lower<std::string>("aBc");
     auto res_u = utils::to_upper<std::string>("aBc");
@@ -180,4 +181,36 @@ void exmaple_strings()
     jvec2 = jvec2.substr(0, jvec2.size() - 4);
 
     assert(jvec == jvec2);
+}
+
+inline void example_buffer()
+{
+
+    Buffer buf(100);
+    assert(buf.capacity() == 100);
+
+    const char data[] = "bian";
+    buf.add((const uint8_t*)data, 4);
+    assert(buf.size() == 4);
+
+    auto ptr = buf.allocToAdd(100);
+    assert(buf.size() == 104);
+
+    for (auto i = 0; i != 100 / 4; ++i)
+    {
+        memcpy(ptr, data, 4);
+        ptr += 4;
+    }
+    ptr = buf.data() + 100;
+    memcpy(ptr, "fxxk", 4);
+
+    buf.remove(4, 96);
+    assert(buf.size() == 8);
+
+    std::string str((const char*)buf.data(), 4);
+    assert(str == data);
+
+    std::string str2((const char*)buf.data() + 4, 4);
+    assert(str2 == "fxxk");
+
 }
