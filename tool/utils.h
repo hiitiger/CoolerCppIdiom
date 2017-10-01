@@ -176,6 +176,12 @@ namespace utils
     }
 
     template<class C, class V>
+    auto contains_(const C& container, const V & value, int, int) -> decltype((container.find(value) != std::end(container)), bool())
+    {
+        return container.find(value) != std::end(container);
+    }
+
+    template<class C, class V>
     auto contains_(const C& container, const V & value, bool, int) -> decltype((container.contains(value)), bool())
     {
         return container.contains(value);
