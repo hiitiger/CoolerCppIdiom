@@ -66,12 +66,12 @@ inline Object* Object::parent() const
     return parent_;
 }
 
-const std::vector<Object*>& Object::children() const
+inline const std::vector<Object*>& Object::children() const
 {
     return children_;
 }
 
-void Object::deleteChildren()
+inline void Object::deleteChildren()
 {
     for (auto& child : children_)
     {

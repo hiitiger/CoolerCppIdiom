@@ -176,13 +176,13 @@ namespace utils
     }
 
     template<class C, class V>
-    auto contains_(const C& container, const V & value, int) -> decltype((container.find(value) != std::end(container)), bool())
+    auto contains_(const C& container, const V & value, bool, int) -> decltype((container.contains(value)), bool())
     {
-        return container.find(value) != std::end(container);
+        return container.contains(value);
     }
 
     template<class C, class V>
-    auto contains_(const C& container, const V & value, bool)
+    auto contains_(const C& container, const V & value, bool, bool)
     {
         return std::find(std::begin(container), std::end(container), value) != std::end(container);
     }
@@ -190,7 +190,7 @@ namespace utils
     template<class C, class V>
     auto contains(const C& container, const V & value)
     {
-        return contains_(container, value, 0);
+        return contains_(container, value, 0, 0);
     }
 
     template<class C>
@@ -207,8 +207,7 @@ namespace utils
     template<class C>
     auto sum(const C& conatiner)
     {
-        const auto sz = std::distance(std::begin(conatiner), std::end(conatiner));
-
+        const auto sz = conatiner.size();
         return sz ? std::accumulate(std::begin(conatiner), std::end(conatiner), typename C::value_type(), [](auto x, auto y) {return x + y; })
             : typename C::value_type();
     }
@@ -223,7 +222,7 @@ namespace utils
     template<class C>
     auto avg(const C& conatiner)
     {
-        const auto sz = std::distance(std::begin(conatiner), std::end(conatiner));
+        const auto sz = conatiner.size();
         return sz ? std::accumulate(std::begin(conatiner), std::end(conatiner), typename C::value_type(), [](auto x, auto y) {return x + y; }) / sz
             : typename C::value_type();
     }
