@@ -230,4 +230,89 @@ namespace concurrency_
         static const auto pool = concurrency_::Pool_();
         static const auto ui = concurrency_::UI_();
     }
+
+    ///---------------
+    ///---------------   
+    template<class _Ty>
+    struct Awaiter
+    {
+        concurrency::task<_Ty> _Task;
+
+        std::thread::id thread_id = std::this_thread::get_id();
+
+        Awaiter(concurrency::task<_Ty>&& t) : _Task(t)
+        {
+
+        }
+
+        Awaiter(concurrency::task<_Ty>&& t, std::thread::id th_id) : _Task(t), thread_id(th_id)
+        {
+
+        }
+
+        bool await_ready()
+        {
+            return _Task.is_done();
+        }
+
+        template <typename _Handle>
+        void await_suspend(_Handle _ResumeCb)
+        {
+            if (thread_id == AppUI::threadId())
+            {
+                auto op = concurrency::task_options(AppUI::static_pplScheduler());
+                op.set_continuation_context(concurrency::task_continuation_context::get_current_winrt_context());
+                _Task.then([_ResumeCb](concurrency::task<_Ty>&)
+                {
+                    _ResumeCb();
+                }, op);
+            }
+            else
+            {
+                auto op = concurrency::task_options(concurrency_::static_pplScheduler());
+                op.set_continuation_context(concurrency::task_continuation_context::get_current_winrt_context());
+                _Task.then([_ResumeCb](concurrency::task<_Ty>&)
+                {
+                    _ResumeCb();
+                }, op);
+            }
+        }
+        auto await_resume()
+        {
+            return _Task.get();
+        }
+    };
+
+    template<class _Ty>
+    struct AwaiterUI : public Awaiter<_Ty>
+    {
+        AwaiterUI(concurrency::task<_Ty>&& t)
+            : Awaiter(std::move(t), AppUI::threadId())
+        {
+
+        }
+    };
+
+    template<class _Ty>
+    struct AwaiterPool : public Awaiter<_Ty>
+    {
+        AwaiterPool(concurrency::task<_Ty>&& t)
+            : Awaiter(std::move(t), std::thread::id())
+        {
+
+        }
+    };
 }
+
+template <typename _Ty>
+auto operator co_await(concurrency::task<_Ty> &&f)
+{
+    return concurrency_::Awaiter<_Ty>{std::move(f)};
+}
+
+#define  __await co_await
+#define  __yield co_yield
+#define  __return co_return
+
+#define  __awaitui co_await( concurrency_::AwaiterUI<void>(concurrency_::async([]{})))
+#define  __awaitpool co_await( concurrency_::AwaiterPool<void>(concurrency_::async([]{})))
