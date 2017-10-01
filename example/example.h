@@ -12,6 +12,8 @@
 #include "../tool/utils.h"
 #include "../tool/utlils_num.h"
 
+#include "../adapter/ppl/appasync.h"
+
 void example_throttle()
 {
     {
@@ -214,3 +216,29 @@ inline void example_buffer()
     assert(str2 == "fxxk");
 
 }
+
+
+#if 0
+
+void example_async()
+{
+    using namespace concurrency_;
+
+    delayed(1000)
+        | ui([] {
+        std::cout << "running on ui" << std::endl;
+    })
+        | pool([] {
+        std::cout << "running on pool" << std::endl;
+        return std::this_thread::get_id();
+    })
+        | pool([](std::thread::id id) {
+        std::cout << "running on pool" << std::endl;
+        std::cout << "received  thread_id" << id << std::endl;
+    });
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+}
+
+#endif
