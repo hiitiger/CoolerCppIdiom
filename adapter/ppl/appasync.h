@@ -183,19 +183,19 @@ namespace concurrency_
     __forceinline auto operator | (const concurrency::task<T>& _Task, DelayThen<R>&& d)
     {
         auto _Then = [d](R _Ret) {
-            concurrency::task_completion_event<T> tce;
+            concurrency::task_completion_event<R> tce;
             AppUI::asyncDelayed([tce, d, _Ret]() {
                 tce.set(_Ret);
             }, d._Timeout);
 
-            concurrency::task<T> event_set(tce);
+            concurrency::task<R> event_set(tce);
             return event_set.then(d, concurrency::task_options(concurrency_::static_pplScheduler()));
         };
 
         return _Task.then(_Then, concurrency::task_options(concurrency_::static_pplScheduler()));
     }
 
-    template<class T, typename = std::enable_if_t<std::is_same<T, void>::type || std::is_same<T, concurrency::task<void>>::type, void>>
+    template<class T, typename = std::enable_if_t<std::is_same<T, void>::value || std::is_same<T, concurrency::task<void>>::value, void>>
     __forceinline auto operator | (const concurrency::task<T>& _Task, DelayThen<void>&& d)
     {
         auto _Then = [d]() {
