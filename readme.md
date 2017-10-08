@@ -1,4 +1,4 @@
-SimplifiedCppIDiom
+SimplifiedCppIdiom
 =======
 Collection of useful c++ tools / common idioms with clean code, easy to use api, mose of then are just one file with minimal dependcy.
 
@@ -87,3 +87,9 @@ A simple throttle control.
 
 ##### [trace](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/trace)
 Object leak trace, perf timer and extras.
+
+##### [skiplist](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/container/skiplist.h)
+A skiplist implementaion.
+
+##### [time](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/time)
+Timetick, Datetime, FpsTimer.
