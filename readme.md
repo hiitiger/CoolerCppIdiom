@@ -15,7 +15,7 @@ A thread safe and trackable signal slot implementation with no external dependen
 ```c++
 signal<void(const std::string&, std::string&&)> signal1;
 connection conn = signal1.connect([](const std::string v, std::string&& str) {
-        std::cout << << v << str << std::endl;
+        std::cout << v << str << std::endl;
     });
 ```
 
