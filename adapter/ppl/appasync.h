@@ -12,6 +12,8 @@ namespace AppUI
     void asyncDelayed(std::function<void()>&& cb, int milliSecs);
 
     std::shared_ptr<concurrency::scheduler_interface> static_pplScheduler();
+    std::thread::id threadId();
+
 }
 
 

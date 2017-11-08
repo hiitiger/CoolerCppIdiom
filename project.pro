@@ -1,5 +1,6 @@
 TEMPLATE = app
-CONFIG -= qt
+#CONFIG -= qt
+QT += core
 CONFIG += console
 
 PRECOMPILED_HEADER = stable.h
@@ -30,3 +31,20 @@ SOURCES += $$files(adapter/*.cpp)
 
 HEADERS += $$files(example/*.h)
 SOURCES += $$files(example/*.cpp)
+
+
+QMAKE_CXXFLAGS += /await
+
+
+HEADERS += adapter/qt/qasync.h
+SOURCES += adapter/qt/qasync.cpp
+
+HEADERS += adapter/qt/metacall.h
+SOURCES += adapter/qt/metacall.cpp
+
+SOURCES += adapter/qt/genericsignalmap.cpp
+SOURCES += adapter/qt/moc_genericsignalmap.cpp
+
+
+HEADERS += adapter/ppl/appasync.h
+SOURCES += adapter/ppl/appasync.cpp

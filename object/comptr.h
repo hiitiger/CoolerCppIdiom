@@ -1,5 +1,4 @@
 #pragma once
-#if defined(_WIN32)
 template <class T>
 class ComPtr
 {
@@ -115,4 +114,3 @@ private:
 
     T** operator&();
 };
-#endif

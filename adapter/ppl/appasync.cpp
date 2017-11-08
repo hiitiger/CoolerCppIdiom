@@ -1,6 +1,8 @@
 #include "appasync.h"
 #include "thread/workerpool.h"
 
+#include "adapter/qt/qasync.h"
+
 namespace AppUI
 {
 
@@ -14,26 +16,35 @@ namespace AppUI
         }
     };
 
-    //void async(const std::function<void()>& cb)
-    //{
-    //}
+    void async(const std::function<void()>& cb)
+    {
+        Qx::async(cb);
+    }
 
-    //void async(std::function<void()>&& cb)
-    //{
-    //}
+    void async(std::function<void()>&& cb)
+    {
+        Qx::async(cb);
+    }
 
-    //void asyncDelayed(const std::function<void()>& cb, int milliSecs)
-    //{
-    //}
+    void asyncDelayed(const std::function<void()>& cb, int milliSecs)
+    {
+        Qx::asyncDelayed(cb, milliSecs);
+    }
 
-    //void asyncDelayed(std::function<void()>&& cb, int milliSecs)
-    //{
-    //}
+    void asyncDelayed(std::function<void()>&& cb, int milliSecs)
+    {
+        Qx::asyncDelayed(cb, milliSecs);
+    }
 
     std::shared_ptr<concurrency::scheduler_interface> static_pplScheduler()
     {
         static std::shared_ptr<concurrency::scheduler_interface>  s = std::make_shared<AppUITaskpplSchedule>();
         return s;
+    }
+
+    std::thread::id threadId()
+    {
+        return Qx::threadId();
     }
 
 }
