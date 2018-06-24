@@ -6,7 +6,7 @@ int main(int /*argc*/, char* /*argv*/[])
 {
     example_throttle();
     example_snowflake();
-    example_signal_slot();
+    example_event_delegate();
     example_datetime();
     example_workerpool();
     example_strings();

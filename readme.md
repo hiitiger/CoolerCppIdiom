@@ -9,15 +9,60 @@ Just include the corresponding file.
 
 ## Useful kits
 
-##### [signal slot](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/signal_slot_track.h)
-A thread safe and trackable signal slot implementation with no external dependency, less than 400 lines of code.
+##### [Event Delegate](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/signal_slot_track.h)
+A thread safe event delegate implementation with no external dependency.
 
 ```c++
-signal<void(const std::string&, std::string&&)> signal1;
-connection conn = signal1.connect([](const std::string v, std::string&& str) {
+Event<void(const std::string&, std::string&&)> signal1;
+Connection conn = signal1.add([](const std::string& v, std::string&& str) {
         std::cout << v << str << std::endl;
     });
 ```
+
+##### [ppl async adapter](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/ppl/appasync.h)
+A wrapper for ppltask which enable user write async code like this:
+
+```c++
+using namespace concurrency_;
+
+auto t = delayed(1000)
+| ui([] {
+    std::cout << "running on ui" << std::endl;
+})
+| pool([] {
+    std::cout << "running on pool" << std::endl;
+    return std::this_thread::get_id();
+})
+| delay<std::thread::id>(100)
+| pool([](std::thread::id id) {
+    std::cout << "running on pool" << std::endl;
+    std::cout <<  "received  thread_id" << id  << std::endl;
+});
+
+```
+
+##### [qasync](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/qt/qasync.h)
+An async call adapter for Qt which enables user to post async lambda to Qt's UI thread.
+
+##### [workerpool](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/thread/workerpool.h)
+A c++11 thread pool.
+
+
+
+##### [snowflake](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/tool/snowflake.h)
+Snowflake uuid generator in c++.
+
+##### [throttle](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/tool/throttle.h)
+A simple throttle control.
+
+##### [trace](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/trace)
+Object leak trace, perf timer and extras.
+
+##### [skiplist](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/container/skiplist.h)
+A skiplist implementaion.
+
+##### [time](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/time)
+Timetick, Datetime, FpsTimer.
 
 ##### [com ptr](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/comptr.h)
 Windows Com ptr implementation offer clean and safe interface.
@@ -48,48 +93,3 @@ connect(object, qFlagLocation(signature.toUtf8().constData()), mapper1, SLOT(map
 connect(mapper1, SIGNAL(mapped(QObject*, QMetaMethod, QVariantList)), this, SLOT(onGenericSignal(QObject*, QMetaMethod, QVariantList)));
 
 ```
-
-
-##### [qasync](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/qt/qasync.h)
-An async call adapter for Qt which enables user to post async lambda call to Qt's UI thread.
-
-##### [workerpool](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/thread/workerpool.h)
-A c++11 thread pool.
-
-##### [ppl async adapter](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/ppl/appasync.h)
-A wrapper for ppltask which enable user write async code like this:
-
-
-```c++
-using namespace concurrency_;
-
-auto t = delayed(1000)
-| ui([] {
-    std::cout << "running on ui" << std::endl;
-})
-| pool([] {
-    std::cout << "running on pool" << std::endl;
-    return std::this_thread::get_id();
-})
-| delay<std::thread::id>(100)
-| pool([](std::thread::id id) {
-    std::cout << "running on pool" << std::endl;
-    std::cout <<  "received  thread_id" << id  << std::endl;
-});
-
-```
-
-##### [snowflake](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/tool/snowflake.h)
-Snowflake uuid generator in c++.
-
-##### [throttle](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/tool/throttle.h)
-A simple throttle control.
-
-##### [trace](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/trace)
-Object leak trace, perf timer and extras.
-
-##### [skiplist](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/container/skiplist.h)
-A skiplist implementaion.
-
-##### [time](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/time)
-Timetick, Datetime, FpsTimer.

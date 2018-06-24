@@ -2,7 +2,7 @@
 #include "../tool/snowflake.h"
 #include "../tool/throttle.h"
 #include "../object/signal_slot_easy.h"
-#include "../object/signal_slot_track.h"
+#include "../object/event.h"
 #include "../time/datetime.h"
 #include "../thread/workerpool.h"
 #include "../object/comptr.h"
@@ -12,7 +12,7 @@
 #include "../tool/utils.h"
 #include "../tool/utlils_num.h"
 
-#include "../adapter/ppl/appasync.h"
+//#include "../adapter/ppl/appasync.h"
 
 void example_throttle()
 {
@@ -92,19 +92,19 @@ void example_snowflake()
 }
 
 
-void example_signal_slot()
+void example_event_delegate()
 {
-    using namespace signal_slot;
+    using namespace Storm;
     bool slot2 = false;
     bool slot1 = false;
-    signal<void(const std::string&, std::string&&)> signal1;
+    Event<void(const std::string&, std::string&&)> signal1;
 
-    connection conn1 = signal1.connect([&slot1](const std::string v, std::string&& str){
+    Connection conn1 = signal1.add([&slot1](const std::string& v, std::string&& str){
         slot1 = true;
         std::cout << "slot 1: " << v << std::string(std::move(str)) << std::endl;
     });
 
-    connection conn2 = signal1.connect([&slot2, &conn2](const std::string v, std::string&& str) {
+    Connection conn2 = signal1.add([&slot2, &conn2](const std::string& v, std::string&& str) {
         slot2 = true;
         std::cout << "slot 2: " << v << str << std::endl;
         conn2.disconnect();
@@ -120,6 +120,22 @@ void example_signal_slot()
     signal1(value, std::string("jiujiujiu"));
     assert(slot1);
     assert(!slot2);
+
+    auto callback2 = Storm::delegate([](int x, int y) {
+        return x * y + 100;
+    });
+
+    auto recCallback2 = Storm::Delegate<int(int, int)>(callback2);
+    std::cout << "\n callback2 res: " << recCallback2(10, 10);
+
+    auto callback4 = Storm::delegate([=](int x, int y) {
+        return x * y + callback2(x, y);
+    });
+
+    std::cout << "\n callback4 res: " << callback4(10, 10);
+
+    auto callback = callback2;
+    std::cout << "\n callback: " << callback(10, 10);
 }
 
 
@@ -219,7 +235,6 @@ inline void example_buffer()
 
 
 #if 0
-
 void example_async()
 {
     using namespace concurrency_;
