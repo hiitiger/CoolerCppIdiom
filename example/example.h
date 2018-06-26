@@ -14,6 +14,19 @@
 
 //#include "../adapter/ppl/appasync.h"
 
+struct  LambdaNoCopy
+{
+    LambdaNoCopy() = default;
+    LambdaNoCopy(const LambdaNoCopy&) = delete;
+    LambdaNoCopy& operator=(const LambdaNoCopy&) = delete;
+    LambdaNoCopy(LambdaNoCopy&&) = default;
+};
+
+#define  CONCAT_INNER(x, y) x##y
+#define  CONCAT(X,Y) CONCAT_INNER(X, Y)
+#define  UNIQ_ID(X) CONCAT(X, __COUNTER__)
+#define  nocopy UNIQ_ID(x) = LambdaNoCopy()
+
 void example_throttle()
 {
     {
@@ -99,16 +112,17 @@ void example_event_delegate()
     bool slot1 = false;
     Event<void(const std::string&, std::string&&)> signal1;
 
-    Connection conn1 = signal1.add([&slot1](const std::string& v, std::string&& str){
+    auto conn1 = signal1.add([&slot1](const std::string& v, std::string&& str){
         slot1 = true;
-        std::cout << "slot 1: " << v << std::string(std::move(str)) << std::endl;
+        std::cout << "\nslot 1: " << v << ", " << std::string(std::move(str)) << std::endl;
     });
 
     Connection conn2 = signal1.add([&slot2, &conn2](const std::string& v, std::string&& str) {
         slot2 = true;
-        std::cout << "slot 2: " << v << str << std::endl;
+        std::cout << "\nslot 2: " << v << ", " << str << std::endl;
         conn2.disconnect();
     });
+
     std::string value = "value";
    // const std::string str = ;
     signal1.emit(value, ("jijiji"));
@@ -121,6 +135,11 @@ void example_event_delegate()
     assert(slot1);
     assert(!slot2);
 
+    auto func1 = Storm::lambda([&, nocopy]() {
+        signal1("123", "123");
+    });
+    func1();
+
     auto callback2 = Storm::delegate([](int x, int y) {
         return x * y + 100;
     });
@@ -131,6 +150,8 @@ void example_event_delegate()
     auto callback4 = Storm::delegate([=](int x, int y) {
         return x * y + callback2(x, y);
     });
+
+
 
     std::cout << "\n callback4 res: " << callback4(10, 10);
 

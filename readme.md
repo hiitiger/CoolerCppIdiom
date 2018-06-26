@@ -9,14 +9,29 @@ Just include the corresponding file.
 
 ## Useful kits
 
-##### [Event Delegate](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/signal_slot_track.h)
+##### [Event Delegate](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/event.h)
 A thread safe event delegate implementation with no external dependency.
 
 ```c++
 Event<void(const std::string&, std::string&&)> signal1;
-Connection conn = signal1.add([](const std::string& v, std::string&& str) {
-        std::cout << v << str << std::endl;
-    });
+
+auto func1 = Storm::lambda([&, nocopy]() {
+    signal1("123", "123");
+});
+
+auto conn1 = signal1.add([&slot1](const std::string& v, std::string&& str){
+    slot1 = true;
+    std::cout << "\nslot 1: " << v << ", " << std::string(std::move(str)) << std::endl;
+});
+
+Connection conn2 = signal1.add([&slot2, &conn2](const std::string& v, std::string&& str) {
+    slot2 = true;
+    std::cout << "\nslot 2: " << v << ", " << str << std::endl;
+    conn2.disconnect();
+});
+
+
+func1();
 ```
 
 ##### [ppl async adapter](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/ppl/appasync.h)
