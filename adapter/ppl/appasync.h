@@ -184,7 +184,7 @@ namespace concurrency_
     template<class T, class R>
     __forceinline auto operator | (const concurrency::task<T>& _Task, DelayThen<R>&& d)
     {
-        auto _Then = [d](R _Ret) {
+        auto _Then = [d = std::move(d)](R _Ret) {
             concurrency::task_completion_event<R> tce;
             AppUI::asyncDelayed([tce, d, _Ret]() {
                 tce.set(_Ret);
@@ -200,7 +200,7 @@ namespace concurrency_
     template<class T, typename = std::enable_if_t<std::is_same<T, void>::value || std::is_same<T, concurrency::task<void>>::value, void>>
     __forceinline auto operator | (const concurrency::task<T>& _Task, DelayThen<void>&& d)
     {
-        auto _Then = [d]() {
+        auto _Then = [d = std::move(d)]() {
             concurrency::task_completion_event<void> tce;
             AppUI::asyncDelayed([tce, d]() {
                 tce.set();
@@ -242,12 +242,12 @@ namespace concurrency_
 
         std::thread::id thread_id = std::this_thread::get_id();
 
-        Awaiter(concurrency::task<_Ty>&& t) : _Task(t)
+        Awaiter(concurrency::task<_Ty>&& t) : _Task(std::move(t))
         {
 
         }
 
-        Awaiter(concurrency::task<_Ty>&& t, std::thread::id th_id) : _Task(t), thread_id(th_id)
+        Awaiter(concurrency::task<_Ty>&& t, std::thread::id th_id) : _Task(std::move(t)), thread_id(th_id)
         {
 
         }
