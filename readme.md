@@ -9,6 +9,47 @@ Just include the corresponding file.
 
 ## Useful kits
 
+##### [ppl async adapter](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/ppl/appasync.h)
+A wrapper for ppltask which enable user write async code like this:
+
+```c++
+using namespace concurrency_;
+
+auto t = delayed(1000)
+| ui([] {
+    std::cout << "running on ui" << std::endl;
+})
+| pool([] {
+    std::cout << "running on pool" << std::endl;
+    return std::this_thread::get_id();
+})
+| delay<std::thread::id>(100)
+| pool([](std::thread::id id) {
+    std::cout << "running on pool" << std::endl;
+    std::cout << "received thread_id" << id  << std::endl;
+});
+
+```
+
+##### [json auto serialize](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/json/josn_auto.h)
+```c++
+struct Person{
+    std::string name;
+    std::optional<std::uint32_t> age;
+    std::optional<std::vector<Person>> friends;
+};
+
+JSON_AUTO(Person, name, age, friends)
+
+void func()
+{
+    Person p;
+    p.name = "John";
+    json obj = p;
+    Person op = obj;
+}
+```
+
 ##### [Event Delegate](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/event.h)
 A thread safe event delegate implementation with no external dependency.
 
@@ -32,28 +73,6 @@ Connection conn2 = signal1.add([&slot2, &conn2](const std::string& v, std::strin
 
 
 func1();
-```
-
-##### [ppl async adapter](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/ppl/appasync.h)
-A wrapper for ppltask which enable user write async code like this:
-
-```c++
-using namespace concurrency_;
-
-auto t = delayed(1000)
-| ui([] {
-    std::cout << "running on ui" << std::endl;
-})
-| pool([] {
-    std::cout << "running on pool" << std::endl;
-    return std::this_thread::get_id();
-})
-| delay<std::thread::id>(100)
-| pool([](std::thread::id id) {
-    std::cout << "running on pool" << std::endl;
-    std::cout <<  "received  thread_id" << id  << std::endl;
-});
-
 ```
 
 ##### [qasync](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/qt/qasync.h)
