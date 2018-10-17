@@ -11,6 +11,7 @@
 #include "../container/buffer.h"
 #include "../tool/utils.h"
 #include "../tool/utlils_num.h"
+#include "../json/json_auto.h"
 
 //#include "../adapter/ppl/appasync.h"
 
@@ -254,6 +255,30 @@ inline void example_buffer()
 
 }
 
+struct Person{
+    std::string name;
+    std::optional<std::uint32_t>  age;
+    std::optional<std::vector<Person>>  friends;
+};
+
+JSON_AUTO(Person, name, age, friends)
+
+void example_json()
+{
+    Person p;
+    p.name = "John";
+
+    std::vector<Person> friends;
+    friends.push_back({ "Wick" });
+    p.friends = friends;
+
+    json obj = p;
+
+    Person op = obj;
+
+    assert(op.name == "John");
+    assert(op.friends->size() == 1);
+}
 
 #if 0
 void example_async()

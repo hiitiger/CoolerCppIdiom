@@ -11,5 +11,6 @@ int main(int /*argc*/, char* /*argv*/[])
     example_workerpool();
     example_strings();
     example_buffer();
+    example_json();
     return 0;
 }

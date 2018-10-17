@@ -3,6 +3,9 @@ TEMPLATE = app
 QT += core
 CONFIG += console
 
+QMAKE_CXXFLAGS += /await
+QMAKE_CXXFLAGS += /std:c++latest
+
 PRECOMPILED_HEADER = stable.h
 SOURCES += $$files(main.cpp)
 
@@ -33,9 +36,6 @@ HEADERS += $$files(example/*.h)
 SOURCES += $$files(example/*.cpp)
 
 
-QMAKE_CXXFLAGS += /await
-
-
 HEADERS += adapter/qt/qasync.h
 SOURCES += adapter/qt/qasync.cpp
 
@@ -48,3 +48,6 @@ SOURCES += adapter/qt/moc_genericsignalmap.cpp
 
 HEADERS += adapter/ppl/appasync.h
 SOURCES += adapter/ppl/appasync.cpp
+
+HEADERS += json/nlohmann/json.hpp
+HEADERS += json/json_auto.h
