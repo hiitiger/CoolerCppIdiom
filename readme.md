@@ -31,7 +31,7 @@ auto t = delayed(1000)
 
 ```
 
-##### [json auto serialize](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/json/josn_auto.h)
+##### [json auto serialize](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/json/json_auto.h)
 ```c++
 struct Person{
     std::string name;
