@@ -61,7 +61,7 @@ namespace
 
         TimeTick run;
 
-        int seq_;
+        int seq_ = 0;
 
     };
 }
