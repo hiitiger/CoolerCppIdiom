@@ -1,5 +1,8 @@
 SimplifiedCppIdiom
 =======
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/da1719248d20475e91623887977f9f54)](https://www.codacy.com/app/hiitiger/simplifiedCppIdiom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiitiger/simplifiedCppIdiom&amp;utm_campaign=Badge_Grade)
+
 Collection of useful c++ tools / common idioms with clean code, easy to use api, mose of then are just one file with minimal dependcy.
 
 
