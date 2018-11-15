@@ -43,7 +43,17 @@ HEADERS += adapter/qt/metacall.h
 SOURCES += adapter/qt/metacall.cpp
 
 SOURCES += adapter/qt/genericsignalmap.cpp
-SOURCES += adapter/qt/moc_genericsignalmap.cpp
+
+
+equals(QT_MAJOR_VERSION, 4) {
+    message( "Building for Qt4")
+    SOURCES += adapter/qt/moc_genericsignalmap_4.cpp
+}
+
+equals(QT_MAJOR_VERSION, 5) {
+    message( "Building for Qt5")
+    SOURCES += adapter/qt/moc_genericsignalmap_5.cpp
+}
 
 
 HEADERS += adapter/ppl/appasync.h

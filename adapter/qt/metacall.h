@@ -40,7 +40,11 @@ namespace Qx
 
         if (!ok)
         {
+#if QT_VERSION >= 0x050000
+            qWarning() << "Calling" << metaMethod.methodSignature() << "failed.";
+#else
             qWarning() << "Calling" << metaMethod.signature() << "failed.";
+#endif
             return QVariant();
         }
         else
