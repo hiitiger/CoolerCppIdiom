@@ -1,7 +1,7 @@
-SimplifiedCppIdiom
+CoolerCppIdiom
 =======
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/da1719248d20475e91623887977f9f54)](https://www.codacy.com/app/hiitiger/simplifiedCppIdiom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiitiger/simplifiedCppIdiom&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/da1719248d20475e91623887977f9f54)](https://www.codacy.com/app/hiitiger/CoolerCppIdiom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiitiger/CoolerCppIdiom&amp;utm_campaign=Badge_Grade)
 
 Collection of useful c++ tools / common idioms with clean code, easy to use api, mose of then are just one file with minimal dependcy.
 
@@ -12,7 +12,7 @@ Just include the corresponding file.
 
 ## Useful kits
 
-##### [ppl async adapter](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/ppl/appasync.h)
+##### [ppl async adapter](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/ppl/appasync.h)
 A wrapper for ppltask which enable user write async code like this:
 
 ```c++
@@ -34,7 +34,9 @@ auto t = delayed(1000)
 
 ```
 
-##### [json auto serialize](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/json/json_auto.h)
+##### [json auto serialize](https://github.com/hiitiger/CoolerCppIdiom/blob/master/json/json_auto.h)
+With nlohmann's [JSON for Modern C++](https://github.com/nlohmann/json) plus a helper file, we can do this now
+
 ```c++
 struct Person{
     std::string name;
@@ -53,8 +55,8 @@ void func()
 }
 ```
 
-##### [Event Delegate](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/event.h)
-A thread safe event delegate implementation with no external dependency.
+##### [Event Delegate](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/event.h)
+A thread safe event delegate implementation.
 
 ```c++
 Event<void(const std::string&, std::string&&)> signal1;
@@ -78,36 +80,36 @@ Connection conn2 = signal1.add([&slot2, &conn2](const std::string& v, std::strin
 func1();
 ```
 
-##### [qasync](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/qt/qasync.h)
+##### [qasync](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/qt/qasync.h)
 An async call adapter for Qt which enables user to post async lambda to Qt's UI thread.
 
-##### [workerpool](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/thread/workerpool.h)
+##### [workerpool](https://github.com/hiitiger/CoolerCppIdiom/blob/master/thread/workerpool.h)
 A c++11 thread pool.
 
 
 
-##### [snowflake](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/tool/snowflake.h)
+##### [snowflake](https://github.com/hiitiger/CoolerCppIdiom/blob/master/tool/snowflake.h)
 Snowflake uuid generator in c++.
 
-##### [throttle](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/tool/throttle.h)
+##### [throttle](https://github.com/hiitiger/CoolerCppIdiom/blob/master/tool/throttle.h)
 A simple throttle control.
 
-##### [trace](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/trace)
+##### [trace](https://github.com/hiitiger/CoolerCppIdiom/tree/master/trace)
 Object leak trace, perf timer and extras.
 
-##### [skiplist](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/container/skiplist.h)
+##### [skiplist](https://github.com/hiitiger/CoolerCppIdiom/blob/master/container/skiplist.h)
 A skiplist implementaion.
 
-##### [time](https://github.com/hiitiger/simplifiedCppIdiom/tree/master/time)
+##### [time](https://github.com/hiitiger/CoolerCppIdiom/tree/master/time)
 Timetick, Datetime, FpsTimer.
 
-##### [com ptr](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/comptr.h)
+##### [com ptr](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/comptr.h)
 Windows Com ptr implementation offer clean and safe interface.
 
-##### [object tree](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/object/objecttree.h)
+##### [object tree](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/objecttree.h)
 Object tree is a useful way to manage object in c++.
 
-##### [Qt metecall](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/qt/metacall.h)
+##### [Qt metecall](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/qt/metacall.h)
 Generica Qt metacall which enables user to call QObject's method with name and QVariantList packed arguments.
 
 ```c++
@@ -121,7 +123,7 @@ Qx::metaCall(object, metaMethod, args);
 
 ```
 
-##### [Qt genericsignalmap](https://github.com/hiitiger/simplifiedCppIdiom/blob/master/adapter/qt/genericsignalmap.h)
+##### [Qt genericsignalmap](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/qt/genericsignalmap.h)
 Generica Qt signal map which enables user to connect QObject's signal with name and QVariantList packed arguments.
 
 ```c++
