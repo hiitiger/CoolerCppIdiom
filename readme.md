@@ -13,7 +13,8 @@ Just include the corresponding file.
 ## Useful kits
 
 ##### [ppl async adapter](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/ppl/appasync.h)
-A wrapper for ppltask which enable user write async code like this:
+A cooler version of promise pattern, we can create our own operator to dispatch task to threads(ui,pool,io,http,etc).
+with a wrapper for ppltask, now we can write async code like this:
 
 ```c++
 using namespace concurrency_;
@@ -35,6 +36,7 @@ auto t = delayed(1000)
 ```
 
 ##### [json auto serialize](https://github.com/hiitiger/CoolerCppIdiom/blob/master/json/json_auto.h)
+Make json serialization easier for your life.
 With nlohmann's [JSON for Modern C++](https://github.com/nlohmann/json) plus a helper file, we can do this now
 
 ```c++
@@ -56,7 +58,7 @@ void func()
 ```
 
 ##### [Event Delegate](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/event.h)
-A thread safe event delegate implementation.
+A simple yet complete event delegate implementation, support trackable listener, offer an alternate bind to std::bind which support bind to smart pointer.
 
 ```c++
 Event<void(const std::string&, std::string&&)> signal1;
