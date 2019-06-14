@@ -3,7 +3,7 @@ CoolerCppIdiom
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/da1719248d20475e91623887977f9f54)](https://www.codacy.com/app/hiitiger/CoolerCppIdiom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiitiger/CoolerCppIdiom&amp;utm_campaign=Badge_Grade)
 
-Collection of useful c++ tools / common idioms with clean code, easy to use api, mose of then are just one file with minimal dependcy.
+Collection of useful c++ tools / common idioms you might not found elsewhere, provide with clean code and easy to use api, mose of then are just one file with minimal dependcy.
 
 
 ## How to
@@ -14,7 +14,8 @@ Just include the corresponding file.
 
 ##### [ppl async adapter](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/ppl/appasync.h)
 A cooler version of promise pattern, we can create our own operator to dispatch task to threads(ui,pool,io,http,etc).
-with a wrapper for ppltask, now we can write async code like this:
+
+This one uses ppltask, but we can implement it on any primise-like library for c++.
 
 ```c++
 using namespace concurrency_;
@@ -36,7 +37,9 @@ auto t = delayed(1000)
 ```
 
 ##### [json auto serialize](https://github.com/hiitiger/CoolerCppIdiom/blob/master/json/json_auto.h)
+
 Make json serialization easier for your life.
+
 With nlohmann's [JSON for Modern C++](https://github.com/nlohmann/json) plus a helper file, we can do this now
 
 ```c++
@@ -58,7 +61,7 @@ void func()
 ```
 
 ##### [Event Delegate](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/event.h)
-A simple yet complete event delegate implementation, support trackable listener, offer an alternate bind to std::bind which support bind to smart pointer.
+A simple yet complete event delegate implementation, support trackable listener, provide an alternate bind to std::bind which support bind to smart pointer.
 
 ```c++
 Event<void(const std::string&, std::string&&)> signal1;
@@ -86,9 +89,7 @@ func1();
 An async call adapter for Qt which enables user to post async lambda to Qt's UI thread.
 
 ##### [workerpool](https://github.com/hiitiger/CoolerCppIdiom/blob/master/thread/workerpool.h)
-A c++11 thread pool.
-
-
+A easy to use c++11 thread pool.
 
 ##### [snowflake](https://github.com/hiitiger/CoolerCppIdiom/blob/master/tool/snowflake.h)
 Snowflake uuid generator in c++.
@@ -99,14 +100,11 @@ A simple throttle control.
 ##### [trace](https://github.com/hiitiger/CoolerCppIdiom/tree/master/trace)
 Object leak trace, perf timer and extras.
 
-##### [skiplist](https://github.com/hiitiger/CoolerCppIdiom/blob/master/container/skiplist.h)
-A skiplist implementaion.
-
 ##### [time](https://github.com/hiitiger/CoolerCppIdiom/tree/master/time)
 Timetick, Datetime, FpsTimer.
 
 ##### [com ptr](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/comptr.h)
-Windows Com ptr implementation offer clean and safe interface.
+Windows Com ptr implementation with clean and safe interface.
 
 ##### [object tree](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/objecttree.h)
 Object tree is a useful way to manage object in c++.
