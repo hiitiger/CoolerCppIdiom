@@ -3,7 +3,7 @@ CoolerCppIdiom
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/da1719248d20475e91623887977f9f54)](https://www.codacy.com/app/hiitiger/CoolerCppIdiom?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiitiger/CoolerCppIdiom&amp;utm_campaign=Badge_Grade)
 
-Collection of useful c++ tools / common idioms you might not found elsewhere, provide with clean code and easy to use api, mose of then are just one file with minimal dependcy.
+Collection of useful c++ tools / common idioms you might not found elsewhere, provide with clean code and easy to use api, mose of then are just one file with minimal dependency.
 
 
 ## How to
@@ -12,10 +12,10 @@ Just include the corresponding file.
 
 ## Useful kits
 
-##### [ppl async adapter](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/ppl/appasync.h)
-A cooler version of promise pattern, we can create our own operator to dispatch task to threads(ui,pool,io,http,etc).
+##### [cooler cpp async](https://github.com/hiitiger/CoolerCppIdiom/blob/master/adapter/ppl/appasync.h)
+A cooler version of promise pattern, we can create our own dispatcher to dispatch task to threads(ui,pool,io,http,etc) just like using std::async and future<T>::then.
 
-This one uses ppltask, but we can implement it on any primise-like library for c++.
+This specific implementation uses ppltask, but we can implement it on any primise-like library for c++.
 
 ```c++
 using namespace concurrency_;
@@ -24,8 +24,8 @@ auto t = delayed(1000)
 | ui([] {
     std::cout << "running on ui" << std::endl;
 })
-| pool([] {
-    std::cout << "running on pool" << std::endl;
+| io([] {
+    std::cout << "running on io" << std::endl;
     return std::this_thread::get_id();
 })
 | delay<std::thread::id>(100)
@@ -61,7 +61,7 @@ void func()
 ```
 
 ##### [Event Delegate](https://github.com/hiitiger/CoolerCppIdiom/blob/master/object/event.h)
-A simple yet complete event delegate implementation, support trackable listener, provide an alternate bind to std::bind which support bind to smart pointer.
+A simple yet powerful event delegate implementation, support trackable listener, provide an alternate bind to std::bind which support bind to smart pointer.
 
 ```c++
 Event<void(const std::string&, std::string&&)> signal1;
